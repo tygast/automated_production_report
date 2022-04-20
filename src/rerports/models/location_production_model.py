@@ -13,14 +13,14 @@ from reports.models.summary_production_model import (
     INLET_FLOWRATE,
 )
 from reports.templates.daily_plots import product_plot, inlet_plot
-from hubtools.utilities.tags import TAGS, GetTags
-from hubtools.utilities.alter_table import (
+from data_tools.utilities.tags import TAGS, GetTags
+from data_tools.utilities.alter_table import (
     product_calculations,
     calculate_cumulative_flows,
     calculate_cumulative_tank_volumes,
     get_location_data,
 )
-from hubtools.utilities.summary_table import (
+from data_tools.utilities.summary_table import (
     calculate_product_summary_stats,
     calculate_flow_summary_stats,
     calculate_pressure_summary_stats,

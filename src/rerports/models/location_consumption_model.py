@@ -5,17 +5,17 @@ from collections import defaultdict
 
 import numexpr as ne
 
-from hubtools.algorithms.fill_and_drain_inference import (
+from data_tools.algorithms.fill_and_drain_inference import (
     calculate_chemical_usage,
     infer_fill_and_drain,
 )
 from reports.templates.daily_plots import consum_measured_analysis, consum_plot
-from hubtools.utilities.tags import TAGS, GetTags
-from hubtools.utilities.alter_table import (
+from data_tools.utilities.tags import TAGS, GetTags
+from data_tools.utilities.alter_table import (
     calculate_cumulative_flows,
     get_location_data,
 )
-from hubtools.utilities.build_table import convert_to_zero, extend_list
+from data_tools.utilities.build_table import convert_to_zero, extend_list
 
 ne.set_num_threads(12)
 

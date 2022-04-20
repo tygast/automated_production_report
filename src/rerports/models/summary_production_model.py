@@ -6,8 +6,8 @@ import numexpr as ne
 
 from reports.config import get_logger
 from reports.templates.daily_plots import product_summary_plot
-from hubtools.utilities.tags import GetTags, TAGS
-from hubtools.utilities.alter_table import (
+from data_tools.utilities.tags import GetTags, TAGS
+from data_tools.utilities.alter_table import (
     product_calculations,
     calculate_product_totals,
     calculate_cumulative_flows,

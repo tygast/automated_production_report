@@ -106,7 +106,7 @@ dependencies:
   - zlib=1.2.11=h62dcd97_1010
   - zstd=1.5.0=h6255e5f_0
   - pip:
-    - hubtools==1.0.16
+    - data_tools==1.0.16
     - pycygnet==0.0.6
     - pywin32==302
 prefix: C:\Users\user1\anaconda3\envs\prod_report
