@@ -1,0 +1,29 @@
+# Initial config for logging
+version=1
+[formatters]
+    [formatters.default]
+        format="%(asctime)s %(name)s (%(levelname)s) %(message)s"
+        datefmt="%Y-%m-%d %H:%M:%S"
+[handlers]
+    [handlers.console]
+        class="logging.StreamHandler"
+        formatter="default"
+        stream="ext://sys.stdout"
+        level="INFO"
+    [handlers.file]
+        class="logging.handlers.TimedRotatingFileHandler"
+        formatter="default"
+        filename="T://user1//DialyLog//ReportLog.log"
+        when="D"
+        interval=1
+        backupCount=5
+        level="INFO"
+    [handlers.email]
+        class="logging.handlers.SMTPHandler"
+        mailhost="smtp.company.com"
+        fromaddr="user1@company.com"
+        toaddrs=["user1@company.com"]
+        subject="The Dialy Report Failed"
+        level="ERROR"
+
+

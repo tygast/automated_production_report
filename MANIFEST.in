@@ -1,0 +1,7 @@
+include LICENSE readme.md requirements.txt MANIFEST.in
+include src/prodreport/configs/
+recursive-include src/prodreport *.py *.txt *.bat *.toml
+recursive-include tests *.py
+recursive-include docs *.md *.rst *.txt
+global-exclude *.pyc
+global-exclude __pycache__
