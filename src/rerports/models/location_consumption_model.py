@@ -5,7 +5,7 @@ from collections import defaultdict
 
 import numexpr as ne
 
-from hubTools.algorithms.fill_and_drain_inference import (
+from hubtools.algorithms.fill_and_drain_inference import (
     calculate_chemical_usage,
     infer_fill_and_drain,
 )
