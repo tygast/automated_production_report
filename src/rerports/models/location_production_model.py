@@ -63,17 +63,26 @@ def operation():
             product_data["cumulative_inlet"] = calculate_cumulative_flows(
                 product_data.inlet_flowrate, 1 / 1440
             )
-            product_data["product_per_M"], product_data["cum_product"] = product_calculations(product_data)
-            product_data["cum_liquid_product_flowrate"] = calculate_cumulative_flows(product_data.product_flowrate, 1)
+            (
+                product_data["product_per_M"],
+                product_data["cum_product"],
+            ) = product_calculations(product_data)
+            product_data["cum_liquid_product_flowrate"] = calculate_cumulative_flows(
+                product_data.product_flowrate, 1
+            )
             product_data["cum_tank"] = calculate_cumulative_tank_volumes(
                 product_data.product_tank_volume, 1
             )
 
-            inlet_avg, product_avg_gpm, product_vol = calculate_product_summary_stats(product_data)
+            inlet_avg, product_avg_gpm, product_vol = calculate_product_summary_stats(
+                product_data
+            )
             (
                 location_product_data[location]["product_figures"],
                 location_product_data[location]["product_axes"],
-            ) = product_plot(product_data, NAME(location), inlet_avg, product_avg_gpm, product_vol)
+            ) = product_plot(
+                product_data, NAME(location), inlet_avg, product_avg_gpm, product_vol
+            )
         if (
             INLET_FLOWRATE(location)
             and DISCHARGE_FLOWRATE(location)
@@ -124,7 +133,8 @@ def operation():
         )
 
     product_figures = [
-        location_product_data[location]["product_figures"] for location in location_product_data
+        location_product_data[location]["product_figures"]
+        for location in location_product_data
     ]
 
     inlet_figures = [

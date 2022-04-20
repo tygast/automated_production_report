@@ -100,7 +100,9 @@ def operation():
             location_type_a.append(location_type_a_total)
 
         if DESIGNATION(location) == "UPPER":
-            product_total_upper, product_pumped_upper = calculate_product_totals(location, product_data)
+            product_total_upper, product_pumped_upper = calculate_product_totals(
+                location, product_data
+            )
             if product_total_upper > 0:
                 upper_product_total.append(product_total_upper)
             else:
@@ -109,7 +111,9 @@ def operation():
             upper_locations.append(NAME(location))
 
         if DESIGNATION(location) == "LOWER":
-            product_total_lower, product_pumped_lower = calculate_product_totals(location, product_data)
+            product_total_lower, product_pumped_lower = calculate_product_totals(
+                location, product_data
+            )
             if product_total_lower > 0:
                 lower_product_total.append(product_total_lower)
             else:

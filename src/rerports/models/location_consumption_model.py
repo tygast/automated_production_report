@@ -41,12 +41,12 @@ def flowrate_based_values(location, start_date: dt, end_date: dt):
     chem_data["cumulative_inlet"] = calculate_cumulative_flows(
         chem_data.inlet_flowrate, 1 / 1440
     )
-    chem_data["cumulative_fuel"] = calculate_cumulative_flows(chem_data.fuel_vol, 1 / 1440)
+    chem_data["cumulative_fuel"] = calculate_cumulative_flows(
+        chem_data.fuel_vol, 1 / 1440
+    )
     shift_1_values = chem_data.loc[chem_data.index.strftime("%H:%M:%S") == "19:00:00"]
 
-    shift_2_values = chem_data.loc[
-        chem_data.index.strftime("%H:%M:%S") == "07:00:00"
-    ]
+    shift_2_values = chem_data.loc[chem_data.index.strftime("%H:%M:%S") == "07:00:00"]
     shift_2_values = shift_2_values.drop(shift_2_values.index[0])
 
     return shift_1_values, shift_2_values
@@ -69,12 +69,8 @@ def level_based_values(location, start_date: dt, end_date: dt):
     shift_2_end = shift_1_end + dt.timedelta(hours=12)
     one_hour = dt.timedelta(hours=1)
 
-    shift_1_level_data_slice = slice(
-        start_date, shift_1_end + one_hour
-    )  
-    shift_2_level_data_slice = slice(
-        shift_1_end - one_hour, shift_2_end + one_hour
-    )
+    shift_1_level_data_slice = slice(start_date, shift_1_end + one_hour)
+    shift_2_level_data_slice = slice(shift_1_end - one_hour, shift_2_end + one_hour)
     shift_1 = chem_data.loc[shift_1_level_data_slice]
     if shift_1.empty:
         shift_1_chemical_a, shift_1_inlet = 0, 0
@@ -82,7 +78,9 @@ def level_based_values(location, start_date: dt, end_date: dt):
         valid_fwd_values, valid_bkwd_values, shift_1_inlet = infer_fill_and_drain(
             shift_1, shift_1_start, shift_1_end
         )
-        shift_1_chemical_a = calculate_chemical_usage(valid_fwd_values, valid_bkwd_values)
+        shift_1_chemical_a = calculate_chemical_usage(
+            valid_fwd_values, valid_bkwd_values
+        )
 
     shift_2 = chem_data.loc[shift_2_level_data_slice]
     if shift_2.empty:
@@ -91,13 +89,20 @@ def level_based_values(location, start_date: dt, end_date: dt):
         valid_fwd_values, valid_bkwd_values, shift_2_inlet = infer_fill_and_drain(
             shift_2, shift_1_end, shift_2_end,
         )
-        shift_2_chemical_a = calculate_chemical_usage(valid_fwd_values, valid_bkwd_values)
+        shift_2_chemical_a = calculate_chemical_usage(
+            valid_fwd_values, valid_bkwd_values
+        )
 
     return shift_1_chemical_a, shift_2_chemical_a, shift_1_inlet, shift_2_inlet
 
 
 def per_inlet_volume(
-    shift_1_values, shift_2_values, chem_usage, shift_1_inlet=None, shift_2_inlet=None, column=None
+    shift_1_values,
+    shift_2_values,
+    chem_usage,
+    shift_1_inlet=None,
+    shift_2_inlet=None,
+    column=None,
 ):
     if chem_usage == "level_based":
         if shift_1_inlet == 0 and shift_2_inlet == 0:
@@ -120,20 +125,30 @@ def per_inlet_volume(
             shift_1_per_inlet_volume = 0
             shift_2_per_inlet_volume = (
                 (shift_2_values[column].iloc[0] - shift_1_values[column].iloc[0]) * 1000
-            ) / (shift_2_values.cumulative_inlet.iloc[0] - shift_1_values.cumulative_inlet.iloc[0])
+            ) / (
+                shift_2_values.cumulative_inlet.iloc[0]
+                - shift_1_values.cumulative_inlet.iloc[0]
+            )
         elif shift_1_values.empty == False and shift_2_values.empty:
-            shift_1_per_inlet_volume = (shift_1_values[column].iloc[0] * 1000) / shift_1_values.cumulative_inlet.iloc[
-                0
-            ]
+            shift_1_per_inlet_volume = (
+                shift_1_values[column].iloc[0] * 1000
+            ) / shift_1_values.cumulative_inlet.iloc[0]
             shift_2_per_inlet_volume = 0
-        elif shift_2_values.cumulative_inlet.iloc[0] - shift_1_values.cumulative_inlet.iloc[0] != 0:
-            shift_1_per_inlet_volume = (shift_1_values[column].iloc[0] * 1000) / shift_1_values.cumulative_inlet.iloc[
-                0
-            ]
+        elif (
+            shift_2_values.cumulative_inlet.iloc[0]
+            - shift_1_values.cumulative_inlet.iloc[0]
+            != 0
+        ):
+            shift_1_per_inlet_volume = (
+                shift_1_values[column].iloc[0] * 1000
+            ) / shift_1_values.cumulative_inlet.iloc[0]
 
             shift_2_per_inlet_volume = (
                 (shift_2_values[column].iloc[0] - shift_1_values[column].iloc[0]) * 1000
-            ) / (shift_2_values.cumulative_inlet.iloc[0] - shift_1_values.cumulative_inlet.iloc[0])
+            ) / (
+                shift_2_values.cumulative_inlet.iloc[0]
+                - shift_1_values.cumulative_inlet.iloc[0]
+            )
         else:
             shift_1_per_inlet_volume = 0
             shift_2_per_inlet_volume = 0
@@ -157,12 +172,19 @@ def operation():
 
     for location, _ in TAGS:
         if location != "Location_I" and CONNECTION_TYPE(location) != "connection_1":
-            shift_1_chemical_a, shift_2_chemical_a, shift_1_inlet, shift_2_inlet = level_based_values(
-                location, start_date, end_date,
-            )
+            (
+                shift_1_chemical_a,
+                shift_2_chemical_a,
+                shift_1_inlet,
+                shift_2_inlet,
+            ) = level_based_values(location, start_date, end_date,)
 
             shift_1_chemical_a_eff, shift_2_chemical_a_eff = per_inlet_volume(
-                shift_1_chemical_a, shift_2_chemical_a, "level_based", shift_1_inlet, shift_2_inlet,
+                shift_1_chemical_a,
+                shift_2_chemical_a,
+                "level_based",
+                shift_1_inlet,
+                shift_2_inlet,
             )
             chemical_a_shift_1_values.append(shift_1_chemical_a_eff)
             chemical_a_shift_2_values.append(shift_2_chemical_a_eff)
@@ -193,10 +215,13 @@ def operation():
                 vol_used,
             )
             daily_measured_figures = [
-                location_type_b_tank_level[location_type_b]["measured_figures"] for location_type_b in location_type_b_tank_level
+                location_type_b_tank_level[location_type_b]["measured_figures"]
+                for location_type_b in location_type_b_tank_level
             ]
 
-        shift_1_fuel, shift_2_fuel = flowrate_based_values(location, start_date, end_date,)
+        shift_1_fuel, shift_2_fuel = flowrate_based_values(
+            location, start_date, end_date,
+        )
         shift_1_fuel_avg, shift_2_fuel_avg = per_inlet_volume(
             shift_1_fuel, shift_2_fuel, "flow_based", column="cumulative_fuel"
         )
@@ -215,7 +240,12 @@ def operation():
     (
         location_chemical_a_data["consum_figures"],
         location_chemical_a_data["summary_figures"],
-    ) = consum_plot(chemical_a_shift_1_values, chemical_a_shift_2_values, location_names, "chemical_a",)
+    ) = consum_plot(
+        chemical_a_shift_1_values,
+        chemical_a_shift_2_values,
+        location_names,
+        "chemical_a",
+    )
 
     (
         location_fuel_data["consum_figures"],

@@ -63,5 +63,3 @@ traitlets==5.1.1
 wcwidth==0.2.5
 wheel==0.37.0
 wincertstore==0.2
-# -e git+https://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@github.com/tygast/hubTools.git#egg=hubTools
-# -e git+https://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@git.eogresources.com/tgaston/PyCygNet.git#egg=PyCygNet

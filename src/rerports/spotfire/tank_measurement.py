@@ -25,6 +25,7 @@ CHEMICAL_D = Configuration().chemical_d
 CHEMICAL_E_VOLUME = Configuration().chemical_e_volume
 CHEMICAL_E = Configuration().chemical_e
 
+
 def get_tank_volume():
     """
     Generates csv file to be used in spotfire analysis for chemical consumption.

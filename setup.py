@@ -10,7 +10,7 @@ with open("src/reports/__init__.py", encoding="utf8") as f:
 setup(
     version=version,
     description=(
-        "A set of programs meant to be run on a schedule to" 
+        "A set of programs meant to be run on a schedule to"
         "generate consumption and production reports for"
         "division locations and unit operations"
     ),

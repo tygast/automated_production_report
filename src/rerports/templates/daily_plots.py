@@ -100,7 +100,13 @@ def set_ticks(axis, data, which):
 
 
 def inlet_plot(
-    df_1, df_2, location_type_b_name, inlet_avg, fuel_gas_avg, discharge_avg, inlet_pressure_avg
+    df_1,
+    df_2,
+    location_type_b_name,
+    inlet_avg,
+    fuel_gas_avg,
+    discharge_avg,
+    inlet_pressure_avg,
 ):
     fig, (flow, psi) = plt.subplots(2, sharex=True)
     fig.suptitle(f"{location_type_b_name} Inlet Analysis", size=20, ha="left", x=0.1)
@@ -241,7 +247,6 @@ def product_plot(df, location_type_b_name, inlet_avg, product_avg_gpm, product_v
 
     gal.plot(df.index, df.cum_product / 42, color="#789b73")
 
-
     gal.set_ylabel("gal")
 
     if location_type_b_name == "Location_I":
@@ -263,10 +268,9 @@ def product_plot(df, location_type_b_name, inlet_avg, product_avg_gpm, product_v
     gal.xaxis.set_minor_locator(MinuteLocator(interval=15))
     gal.xaxis.set_major_formatter(DateFormatter("%I:%M %p"))
 
-    textstr = "$Inlet~Avg=%.2f~SCFD$\n$Product~Avg=%.2f~gal$/$M$\n$Product~Total=%.2f~gal$" % (
-        inlet_avg,
-        product_avg_gpm,
-        product_vol,
+    textstr = (
+        "$Inlet~Avg=%.2f~SCFD$\n$Product~Avg=%.2f~gal$/$M$\n$Product~Total=%.2f~gal$"
+        % (inlet_avg, product_avg_gpm, product_vol,)
     )
 
     text_box = AnchoredText(textstr, frameon=True, loc=2, pad=0.01)
@@ -290,11 +294,7 @@ def consum_plot(shift_1, shift_2, location_names, chem_name):
         y_pos - 0.175, shift_1, width, color=COLORS[chem_name][0], label="shift_1"
     )
     consum.bar(
-        y_pos + 0.175,
-        shift_2,
-        width,
-        color=COLORS[chem_name][1],
-        label="shift_2",
+        y_pos + 0.175, shift_2, width, color=COLORS[chem_name][1], label="shift_2",
     )
 
     if chem_name == "fuel":
@@ -316,11 +316,7 @@ def consum_plot(shift_1, shift_2, location_names, chem_name):
         try:
             consum.set_yticks(
                 np.arange(
-
-                    0,
-                    ((max(max(shift_1), max(shift_2)) * 1.4 // 0.1) / 10) + 0.1,
-                    10,
-
+                    0, ((max(max(shift_1), max(shift_2)) * 1.4 // 0.1) / 10) + 0.1, 10,
                 )
             )
             consum.yaxis.set_minor_locator(MultipleLocator(5))
@@ -331,10 +327,7 @@ def consum_plot(shift_1, shift_2, location_names, chem_name):
         try:
             consum.set_yticks(
                 np.arange(
-
-                    0,
-                    ((max(max(shift_1), max(shift_2)) * 0.14 // 0.1) / 10) + 0.1,
-
+                    0, ((max(max(shift_1), max(shift_2)) * 0.14 // 0.1) / 10) + 0.1,
                 ),
                 0.05,
             )
@@ -351,10 +344,7 @@ def consum_plot(shift_1, shift_2, location_names, chem_name):
             labels.append(l)
 
     plt.legend(
-        handles,
-        labels,
-        loc="upper right",
-        borderaxespad=1,
+        handles, labels, loc="upper right", borderaxespad=1,
     )
 
     return fig, consum
@@ -376,7 +366,9 @@ def consum_measured_analysis(
     sub_locator = mdates.MinuteLocator(interval=15)
 
     fig, (md, vol) = plt.subplots(2, sharex=True)
-    fig.suptitle(f"{location} Chemical A Tank Volume Analysis", size=20, ha="left", x=0.1)
+    fig.suptitle(
+        f"{location} Chemical A Tank Volume Analysis", size=20, ha="left", x=0.1
+    )
 
     md.title.set_text("Mahalanobis Distance")
     md.plot(data.fwd_mds, color="#82cafc", label="fwd_pass")
@@ -511,10 +503,7 @@ def product_summary_plot(
 
     daily.add_artist(daily_text_box)
 
-    trucked_textstr = (
-        r"$\bf{Trucked~Locations:}$"
-        + "\n--Location~F\n--Location~I"
-    )
+    trucked_textstr = r"$\bf{Trucked~Locations:}$" + "\n--Location~F\n--Location~I"
 
     trucked_box = AnchoredText(
         trucked_textstr,
@@ -537,7 +526,12 @@ def product_summary_plot(
     weekly.plot(
         days_in_week, weekly_total_prod, label="Total Production", color="#1e488f"
     )
-    weekly.plot(days_in_week, weekly_location_type_a_prod, label="Location Type A Production", color="#b04e0f")
+    weekly.plot(
+        days_in_week,
+        weekly_location_type_a_prod,
+        label="Location Type A Production",
+        color="#b04e0f",
+    )
     weekly.plot(
         days_in_week,
         weekly_location_type_b_prod,
